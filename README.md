@@ -1,4 +1,3 @@
-```markdown
 # Go Load Balancer
 
 A simple round-robin HTTP load balancer written in Go. Incoming requests are proxied to a pool of backend servers, health-checked periodically, and automatically removed from rotation when unreachable.
@@ -16,6 +15,7 @@ A simple round-robin HTTP load balancer written in Go. Incoming requests are pro
 ---
 
 ## Project Structure
+
 ```
 
 .
@@ -36,7 +36,7 @@ A simple round-robin HTTP load balancer written in Go. Incoming requests are pro
 ├── Makefile # Handy build & run targets
 └── go.mod
 
-````
+```
 
 ---
 
@@ -46,7 +46,7 @@ Place your `config.yaml` under `data/`:
 
 ```yaml
 server:
-  host: "localhost"      # (unused by load-balancer but reserved for future use)
+  host: "localhost" # (unused by load-balancer but reserved for future use)
   port: "8080"
 
 backends:
@@ -56,7 +56,7 @@ backends:
     destination_url: "http://localhost:9002"
   - name: "backend3"
     destination_url: "http://localhost:9003"
-````
+```
 
 - **`backends`**: list of backend services to proxy to.
 - **`destination_url`**: full URL (scheme + host:port).
@@ -126,18 +126,8 @@ pong from server on port 9001
 
 ---
 
-## Extending & Testing
+## Extending
 
 - Add retries or circuit-breaker logic in `run.go`’s `ErrorHandler`.
-- Write unit tests for `pool.GetNextServer()`, `isAlive()`, etc., by injecting fake backends.
 - Configure custom health-check intervals via a new YAML field.
-
----
-
-## License
-
-MIT © 2025 Rahul Sailesh Shah
-
-```
-
-```
+- Make server status updates atomic
