@@ -9,15 +9,26 @@ import (
 	"time"
 )
 
-func NewProxy(target *url.URL) *httputil.ReverseProxy {
-	proxy := httputil.NewSingleHostReverseProxy(target)
-	return proxy
+type Proxy struct {
+	URL          *url.URL
+	reverseProxy *httputil.ReverseProxy
+	handler      http.HandlerFunc
+}
+
+func NewProxy(u *url.URL) *Proxy {
+	proxy := httputil.NewSingleHostReverseProxy(u)
+
+	handler := ProxyRequestHandler(proxy, u, u.Host)
+
+	return &Proxy{
+		URL:          u,
+		reverseProxy: proxy,
+		handler:      handler,
+	}
 }
 
 func ProxyRequestHandler(proxy *httputil.ReverseProxy, url *url.URL, endpoint string) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Printf("[ TinyRP ] Request received at %s at %s\n", r.URL, time.Now().UTC())
-
 		// Update the headers to allow for SSL redirection
 		r.URL.Host = url.Host
 		r.URL.Scheme = url.Scheme

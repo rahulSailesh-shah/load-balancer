@@ -7,9 +7,8 @@ import (
 	"github.com/spf13/viper"
 )
 
-type resource struct {
+type backend struct {
 	Name            string
-	Endpoint        string
 	Destination_URL string
 }
 
@@ -19,8 +18,8 @@ type server struct {
 }
 
 type configuration struct {
-	Server    server
-	Resources []resource
+	Server   server
+	Backends []backend
 }
 
 var Config *configuration
